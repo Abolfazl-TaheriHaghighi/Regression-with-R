@@ -13,20 +13,15 @@
 # Children: تعداد فرزندان مشتری
 # Catalogs: تعداد کاتالوگ‌های ارسالی به مشتری
 # AmountSpent: میزان خرید مشتری به دلار
-
+# Age: بازه سنی مشتریان
 #getwd()
 #setwd(dir = "C:/Users/Abolfazl-Pc/Documents")
 #rm(list = ls())
 my_data <- read.csv("DirectMarketing(200).csv" , header = TRUE)
 #my_data
-sex <- my_data$Gender
-own <- my_data$OwnHome
-marr <- my_data$Married
-Sala <- my_data$Salary
-child <- my_data$Children
-cata <- my_data$Catalogs
-amount <- my_data$AmountSpent
 
+
+attach(my_data)
 
 
 #رگرسون خطی ساده و چندگانه
@@ -38,16 +33,23 @@ amount <- my_data$AmountSpent
 #چون تعداد متغر های مستقل من کم است از روش اول میروم و تمام حالات را در نظر مگیرم (دو به توان تعداد متغر های مستقل)
 
 #model_0 <- مقدار بتا صفر
-model_1 <- lm(amount~Sala)
-model_2 <- lm(amount~cata)
-model_3 <- lm(amount~child)
-model_4 <- lm(amount~Sala + cata)
-model_5 <- lm(amount~Sala + child)
-model_6 <- lm(amount~cata + child)
-model_7 <- lm(amount~Sala + cata + child)
-summary(model_7)
+model_1 <- lm(AmountSpent~Salary)
+model_2 <- lm(AmountSpent~poly(Salary^2))
+model_3 <- lm(AmountSpent~Catalogs)
+model_4 <- lm(AmountSpent~poly(Catalogs^2))
+model_5 <- lm(AmountSpent~Children)
+model_6 <- lm(AmountSpent~poly(Children^2))
+model_7 <- lm(AmountSpent~Salary + Catalogs)
+model_8 <- lm(AmountSpent~Salary * Catalogs)
+model_9 <- lm(AmountSpent~Salary + Children)
+model_10 <- lm(AmountSpent~Salary * Children)
+model_11 <- lm(AmountSpent~Catalogs * Children)
+model_12 <- lm(AmountSpent~Catalogs + Children)
+model_13 <- lm(AmountSpent~(Salary + Catalogs + Children))
 
-#بهترین مدل موجود در اینجا ، مدل 7 است و بیشترن ضریب تعیین را دارد و همه انها معنادار هستند در سطح 0.99 درصد
+summary(model_13)
+
+#بهترین مدل موجود در اینجا ، مدل 13 است و بیشترن ضریب تعیین را دارد و همه انها معنادار هستند در سطح 0.99 درصد
 
 
 

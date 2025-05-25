@@ -56,6 +56,15 @@ abline(model_13, col = "red" , lwd = 3)
 abline(model_8 , col = 'green' , lwd = 3)
 #در اینجا میتوانیم برای هر یک از مدل ها نمودار و خط رگرسیونی رو رسم کرد کافی است مدل مد نظر را در تابع خط جایگزاری کنید
 
+catalogs_vals <- seq(min(Catalogs) , max(Catalogs) , length.out = 1000)
+pred_1 <- predict(model_4 ,data.frame(Catalogs = catalogs_vals))
+lines(catalogs_vals , pred_1 , col = 'skyblue' , lwd = 2)
+
+salary_vals <- seq(min(Salary), max(Salary), length.out = 1000)
+pred_2 <- predict(model_2,data.frame(Salary = salary_vals))
+lines(salary_vals , pred_2 , col = 'blue' , lwd = 2)
+
+#در انجا برای خط های مدل های که توان دارند میتوانیم به مانند بالا عمل کنیم
 
 
 

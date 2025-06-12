@@ -32,7 +32,7 @@ attach(my_data)
 
 #چون تعداد متغر های مستقل من کم است از روش اول میروم و تمام حالات را در نظر مگیرم (دو به توان تعداد متغر های مستقل)
 
-#model_0 <- مقدار بتا صفر
+
 model_1 <- lm(AmountSpent~Salary)
 model_2 <- lm(AmountSpent~poly(Salary^2))
 model_3 <- lm(AmountSpent~Catalogs)
@@ -56,6 +56,7 @@ abline(model_13, col = "red" , lwd = 3)
 abline(model_8 , col = 'green' , lwd = 3)
 #در اینجا میتوانیم برای هر یک از مدل ها نمودار و خط رگرسیونی رو رسم کرد کافی است مدل مد نظر را در تابع خط جایگزاری کنید
 
+
 catalogs_vals <- seq(min(Catalogs) , max(Catalogs) , length.out = 1000)
 pred_1 <- predict(model_4 ,data.frame(Catalogs = catalogs_vals))
 lines(catalogs_vals , pred_1 , col = 'skyblue' , lwd = 2)
@@ -64,10 +65,68 @@ salary_vals <- seq(min(Salary), max(Salary), length.out = 1000)
 pred_2 <- predict(model_2,data.frame(Salary = salary_vals))
 lines(salary_vals , pred_2 , col = 'blue' , lwd = 2)
 
-#در انجا برای خط های مدل های که توان دارند میتوانیم به مانند بالا عمل کنیم
+#برای خط های مدل هایی که توان دارند میتوانیم به مانند بالا عمل کنیم
+
+
+predict(model_13 , data.frame(Salary , Catalogs , Children))
+predict(model_13 , data = my_data)
+predict(model_13 , data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
+
+#با دستور پریدکت میتوان با استفاده از مدلی که ساختیم کار پیشبینی را انجام دهیم به دو صورت که داده های دلخواه بدهیم یا از داده های اصلی استفاده کنیم
+
+
+model0 <- lm(AmountSpent~1)
+sum(resid(model0)^2)
+
+model1 <- lm(AmountSpent~Age)
+sum(resid(model1)^2)
+
+model2 <- lm(AmountSpent~Age + Gender)
+sum(resid(model2)^2)
+
+model3 <- lm(AmountSpent~Age + Gender + OwnHome)
+sum(resid(model3)^2)
+
+model4 <- lm(AmountSpent~Age + Gender + OwnHome + Married)
+sum(resid(model4)^2)
+
+model5 <- lm(AmountSpent~Age + Gender + OwnHome + Married + Salary)
+sum(resid(model5)^2)
+
+model6 <- lm(AmountSpent~Age + Gender + OwnHome + Married + Salary + Children)
+sum(resid(model6)^2)
+
+model7 <- lm(AmountSpent~Age + Gender + OwnHome + Married + Salary + Children + Catalogs)
+sum(resid(model7)^2)
 
 
 
+plot(model7)
+
+#در این بخش با روش فوروارد رفتیم و بهترین مدل ما  یعنی مدل7 با پایین ترن ار اس اس انتخاب شد
+
+
+line0 <- lm(AmountSpent~Salary + Children + Catalogs + Age +  Gender + OwnHome + Married)
+summary(line0)
+
+line1 <- lm(AmountSpent~Salary + Children + Catalogs + Age +  Gender + Married)
+summary(line1)
+
+line2 <- lm(AmountSpent~Salary + Children + Catalogs + Age +  Gender)
+summary(line2)
+
+line3 <- lm(AmountSpent~Salary + Children + Catalogs + Age)
+summary(line3)
+
+line4 <- lm(AmountSpent~Salary + Children + Catalogs)
+summary(line4)
+
+predict(line4 , data.frame(Salary , Catalogs , Children))
+predict(line4 , data = my_data)
+predict(line4, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
+
+plot(line4)
+#در این بخش از روش بکوارد رفتیم و با ترکیب متغیر های کیفی و کمی مدلی را برازش کردیم که متاسفانه هیچ کدام از متغیر های مستقل کیفی معنا دار نبودند و دوباره به مدل قبلی خود یعنی مدل 13 رسیدیم
 
 
 

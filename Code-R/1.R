@@ -99,7 +99,9 @@ sum(resid(model6)^2)
 model7 <- lm(AmountSpent~Age + Gender + OwnHome + Married + Salary + Children + Catalogs)
 sum(resid(model7)^2)
 
-
+predict(model7, data.frame(Salary , Catalogs , Children , Age , Gender , OwnHome , Married))
+predict(model7 , data = my_data)
+predict(model7, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1)) , Age = (c("Old" , "Old")) , Gender = (c("Female" , "Male")), OwnHome =(c("Own" , "Rent")) , Married = (c("Single" , "Single"))))
 
 plot(model7)
 
@@ -130,3 +132,37 @@ plot(line4)
 
 
 
+#-----------------------------------------------------------------------------------------------------------------------
+
+#رگرسیون لجستیک (Logistic Regression)
+
+#مقدار خرید رو به صفر و یک تبدیل میکنم که بتونم از لجستیک استفاده کنم 
+
+my_data$Logistic <- ifelse(my_data$AmountSpent < 350, 0, 1)
+#ستون جدیدی به داده ها اضافه شد که اگر مشتری بیش از 350 دلار خرید کرده است مقدار 1 میگرد و اگر کمتر خرید کرده است مقدار 0 میگیرد
+attach(my_data)
+
+Logistic_line0 <- glm(Logistic ~Salary + Children + Catalogs + Age +  Gender + OwnHome + Married, family = binomial)
+summary(Logistic_line0)
+
+Logistic_line1 <- glm(Logistic ~Salary + Children + Catalogs + Age +  Gender + OwnHome , family = binomial)
+summary(Logistic_line1)
+
+Logistic_line2 <- glm(Logistic ~Salary + Children + Catalogs + Age +  Gender , family = binomial)
+summary(Logistic_line2)
+
+Logistic_line3 <- glm(Logistic ~Salary + Children + Catalogs + Gender , family = binomial)
+summary(Logistic_line3)
+
+Logistic_line4 <- glm(Logistic ~Salary + Children + Catalogs , family = binomial)
+summary(Logistic_line4)
+
+
+plot(Logistic_line4)
+
+predict(Logistic_line4 , data.frame(Salary , Catalogs , Children))
+predict(Logistic_line4 , data = my_data)
+predict(Logistic_line4, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
+
+#در این قسمت با رگرسیون لجستیک بهترین مدل ما مدل لجستیک 4 است که با روش بک وارد بدستش آوردیم
+#سپس نمودار و پیشبینی آن را رسم و انجام دادیم

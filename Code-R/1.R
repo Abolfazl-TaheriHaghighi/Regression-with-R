@@ -208,3 +208,28 @@ lda_line1 <- lda(Logistic ~Salary + Children + Catalogs , data = my_data[trin ,]
 predict(lda_line1 , my_data.500)
 predict(lda_line1, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
 plot(lda_line1)
+
+#-----------------------------------------------------------------------------------------------
+
+#QDA
+qda_line0 <- qda(Logistic ~Salary + Children + Catalogs , data = my_data , subset = trin)
+qda_line0
+summary(qda_line0)
+predict(qda_line0 , my_data.500)
+predict(qda_line0, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
+plot(qda_line0)
+
+#------------------------------------------------------------------------------------------------------
+
+#همخطی
+plot(my_data)
+fit0 <- lm(AmountSpent~ Salary + Children + Catalogs)
+summary(fit0)
+library(car)
+vif(fit0)
+#همخطی هر سه متغییر مستقل حدودا برابر با 1 بود پس مدل همچنان باقی میماند
+
+#-----------------------------------------------------------------------------------------
+
+# Abolfazl Taheri Haghighi
+# Bachelor's student of statistics at Fasa University

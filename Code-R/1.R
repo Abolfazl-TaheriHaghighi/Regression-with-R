@@ -139,7 +139,7 @@ plot(line4)
 #مقدار خرید رو به صفر و یک تبدیل میکنم که بتونم از لجستیک استفاده کنم 
 
 my_data$Logistic <- ifelse(my_data$AmountSpent < 350, 0, 1)
-#ستون جدیدی به داده ها اضافه شد که اگر مشتری بیش از 350 دلار خرید کرده است مقدار 1 میگرد و اگر کمتر خرید کرده است مقدار 0 میگیرد
+#ستون جدیدی به داده ها اضافه شد که اگر مشتری بیش از 350 دلار  کرده است مقدار 1 میگرد و اگر کمتر خرید کرده است مقدار 0 میگیرد
 attach(my_data)
 
 Logistic_line0 <- glm(Logistic ~Salary + Children + Catalogs + Age +  Gender + OwnHome + Married, family = binomial)
@@ -166,3 +166,29 @@ predict(Logistic_line4, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6
 
 #در این قسمت با رگرسیون لجستیک بهترین مدل ما مدل لجستیک 4 است که با روش بک وارد بدستش آوردیم
 #سپس نمودار و پیشبینی آن را رسم و انجام دادیم
+
+#LDA
+install.packages("MASS")
+library(MASS)
+my_data$Logistic <- factor(my_data$Logistic, levels = c(0, 1), labels = c("Low", "High"))
+lda_line0 <- lda(Logistic ~Salary + Children + Catalogs)
+lda_line0
+predict(lda_line0)
+predict(lda_line0)$class
+plot(lda_line0)
+trin <- (AmountSpent < 500)
+length(trin)
+my_data.500 <- my_data [! trin , ]
+lda_line1 <- lda(Logistic ~Salary + Children + Catalogs , data = my_data[trin ,])
+predict(lda_line1 , my_data.500)
+predict(lda_line1, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
+plot(lda_line1)
+
+
+#QDA
+qda_line0 <- qda(Logistic ~Salary + Children + Catalogs , data = my_data , subset = trin)
+qda_line0
+summary(qda_line0)
+predict(qda_line0 , my_data.500)
+predict(qda_line0, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
+plot(qda_line0)

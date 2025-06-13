@@ -107,6 +107,7 @@ plot(model7)
 
 #در این بخش با روش فوروارد رفتیم و بهترین مدل ما  یعنی مدل7 با پایین ترن ار اس اس انتخاب شد
 
+#-------------------------------------------------------------------------------------------------------------------------------
 
 line0 <- lm(AmountSpent~Salary + Children + Catalogs + Age +  Gender + OwnHome + Married)
 summary(line0)
@@ -162,10 +163,34 @@ plot(Logistic_line4)
 
 predict(Logistic_line4 , data.frame(Salary , Catalogs , Children))
 predict(Logistic_line4 , data = my_data)
-predict(Logistic_line4, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
+predict(Logistic_line4, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))),  type = "response")
+
 
 #در این قسمت با رگرسیون لجستیک بهترین مدل ما مدل لجستیک 4 است که با روش بک وارد بدستش آوردیم
 #سپس نمودار و پیشبینی آن را رسم و انجام دادیم
+
+#-------------------------------------------------------------------------------------------------------------------------
+
+#لجستیک چندگانه
+
+install.packages("nnet") 
+library(nnet)
+test <- multinom(Age ~ Salary + AmountSpent + Catalogs + Children + Married + OwnHome + Gender, data = my_data)
+summary(test)
+
+
+test1 <- multinom(Age ~ Salary + Catalogs + Children + Married + OwnHome + Gender, data = my_data)
+summary(test1)
+
+test2 <- multinom(Age ~ Salary + Catalogs + Children + Married + Gender, data = my_data)
+summary(test2)
+
+
+#بهترین مدل ما تست 1 است چون مقدار ای ای سی کمتری میده 
+
+
+#----------------------------------------------------------------------------------------------------------------------
+
 
 #LDA
 install.packages("MASS")
@@ -183,12 +208,3 @@ lda_line1 <- lda(Logistic ~Salary + Children + Catalogs , data = my_data[trin ,]
 predict(lda_line1 , my_data.500)
 predict(lda_line1, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
 plot(lda_line1)
-
-
-#QDA
-qda_line0 <- qda(Logistic ~Salary + Children + Catalogs , data = my_data , subset = trin)
-qda_line0
-summary(qda_line0)
-predict(qda_line0 , my_data.500)
-predict(qda_line0, data.frame(Salary = (c(25000 , 34000)) , Catalogs = (c(6 , 5)) , Children = (c(0 , 1))))
-plot(qda_line0)
